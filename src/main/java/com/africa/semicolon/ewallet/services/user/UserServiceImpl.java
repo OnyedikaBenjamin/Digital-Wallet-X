@@ -4,6 +4,7 @@ import com.africa.semicolon.ewallet.data.models.VerificationOTP;
 import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
+import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
@@ -11,6 +12,7 @@ import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService{
     private UserRepo userRepo;
     @Autowired
     private VerificationOTPService verificationOTPService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public String createAccount(User user) {
         saveUser(user);
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService{
         User foundUser = userRepo.findUserByEmailAddressIgnoreCase(loginRequest.getEmailAddress())
                 .orElseThrow(()-> new GenericHandlerException("User with " + loginRequest.getEmailAddress() + "does not exist "));
         if (foundUser.getIsDisabled())throw new GenericHandlerException("Verify account");
-        if (!Objects.equals(foundUser.getPassword(), loginRequest.getPassWord()))throw new GenericHandlerException("Login incorrect");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), foundUser.getPassword()))throw new GenericHandlerException("Incorrect Password");
         return "Login successful";
     }
 
@@ -56,7 +60,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String changePassword(ChangePasswordRequest changePasswordRequest) {
+        User findUser = userRepo.findUserByEmailAddressIgnoreCase(changePasswordRequest.getEmailAddress()).get();
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), findUser.getPassword())) throw new GenericHandlerException("Incorrect Password!");
+        if (!Objects.equals(changePasswordRequest.getNewPassword(), changePasswordRequest.getConfirmNewPassword())) throw new GenericHandlerException("Password Not Match!");
+        findUser.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        saveUser(findUser);
+        return "Password Successfully Changed";
+    }
+
+    @Override
     public void enableUser(String emailAddress) {
         userRepo.enableUser(emailAddress);
     }
+
 }
