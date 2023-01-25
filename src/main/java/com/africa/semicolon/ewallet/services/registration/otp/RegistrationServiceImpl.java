@@ -74,7 +74,8 @@ public class RegistrationServiceImpl implements RegistrationService{
        var foundUser= userRepo.findUserByEmailAddressIgnoreCase(sendOTPRequest.getEmailAddress())
                 .orElseThrow(()->
                         new GenericHandlerException("User with this" + sendOTPRequest.getEmailAddress() +"does not exist"));
-        String oTP = OTPGenerator.generateOTP().toString();
+       if (!foundUser.getIsDisabled()) throw new GenericHandlerException("You are already a verified user");
+       String oTP = OTPGenerator.generateOTP().toString();
         VerificationOTP verificationOTP = new VerificationOTP(
                 oTP,
                 LocalDateTime.now(),
