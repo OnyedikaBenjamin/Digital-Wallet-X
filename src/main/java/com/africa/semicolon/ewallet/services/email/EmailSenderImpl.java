@@ -15,15 +15,15 @@ public class EmailSenderImpl implements EmailSender{
     private JavaMailSender javaMailSender;
     @Override
     public void send(String to, String email) throws MessagingException {
-        try{
+        try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, mimeMessage.getEncoding());
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,mimeMessage.getEncoding());
             mimeMessageHelper.setSubject("Confirm your email");
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setFrom("BenBillion@gmail.com");
+            mimeMessageHelper.setFrom("sonkaybee@gmail.com");
+            mimeMessageHelper.setText(email, true);
             javaMailSender.send(mimeMessage);
-
-        }catch(MessagingException e){
+        }catch (MessagingException e){
             log.info("problem2: ");
             log.info(e.getMessage());
             throw new RuntimeException(e);
