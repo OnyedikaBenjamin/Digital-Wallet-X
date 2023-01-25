@@ -27,4 +27,10 @@ public class VerificationOTPServiceImpl implements VerificationOTPService {
     public void setVerifiedAt(String otp) {
         verificationOTPRepo.setVerifiedAt(LocalDateTime.now(), otp);
     }
+
+    @Override
+    public void deleteOtp() {
+        verificationOTPRepo.deleteVerificationOTPByExpiredAtBefore(LocalDateTime.now());
+
+    }
 }

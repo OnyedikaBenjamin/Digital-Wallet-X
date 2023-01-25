@@ -10,4 +10,6 @@ public interface VerificationOTPService {
     Optional<VerificationOTP> findByOTP(String otp);
 
     void setVerifiedAt(String otp);
+
+    void deleteOtp();
 }

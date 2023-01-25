@@ -11,6 +11,8 @@ import java.util.Optional;
 
 @Transactional
 public interface VerificationOTPRepo extends JpaRepository<VerificationOTP, Long> {
+
+    void deleteVerificationOTPByExpiredAtBefore(LocalDateTime currentTime);
     Optional<VerificationOTP> findVerificationOTPByOneTimePassword(String oneTimePassword);
 
     @Modifying
