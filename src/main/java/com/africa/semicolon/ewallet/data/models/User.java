@@ -34,7 +34,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isDisabled = true;
-    @OneToOne
     private NextOfKin nextOfKin;
 
     public User(String firstName, String lastName, String emailAddress,  String password, Role role) {
