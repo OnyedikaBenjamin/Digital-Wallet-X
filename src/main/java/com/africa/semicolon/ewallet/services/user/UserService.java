@@ -12,4 +12,5 @@ public interface UserService {
     Optional<User>findUserByEmailAddress(String EmailAddress);
 
     void enableUser(String emailAddress);
+    void saveUser(User user);
 }

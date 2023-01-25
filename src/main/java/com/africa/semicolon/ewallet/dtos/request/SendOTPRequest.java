@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ResendOTPRequest {
+public class SendOTPRequest {
     private String emailAddress;
 }

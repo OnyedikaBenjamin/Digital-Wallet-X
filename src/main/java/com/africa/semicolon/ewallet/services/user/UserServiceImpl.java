@@ -16,10 +16,10 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private VerificationOTPService confirmationOTPService;
+    private VerificationOTPService verificationOTPService;
     @Override
     public String createAccount(User user) {
-        userRepo.save(user);
+        saveUser(user);
         String oTP = OTPGenerator.generateOTP().toString();
         VerificationOTP verificationOTP = new VerificationOTP(
                 oTP,
@@ -27,8 +27,12 @@ public class UserServiceImpl implements UserService{
                 LocalDateTime.now().plusMinutes(10),
                 user
         );
-        confirmationOTPService.saveVerificationOTP(verificationOTP);
+        verificationOTPService.saveVerificationOTP(verificationOTP);
         return oTP;
+    }
+
+    public void saveUser(User user) {
+        userRepo.save(user);
     }
 
     @Override

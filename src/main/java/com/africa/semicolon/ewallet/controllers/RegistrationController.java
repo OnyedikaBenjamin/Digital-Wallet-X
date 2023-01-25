@@ -23,7 +23,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest,
-                                      HttpServletRequest httpServletRequest){
+                                      HttpServletRequest httpServletRequest) throws MessagingException {
         String createUser = registrationService.register(registrationRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
