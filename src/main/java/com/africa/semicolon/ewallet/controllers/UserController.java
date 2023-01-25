@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.ZonedDateTime;
 
 @RestController
-@RequestMapping(path = "api/v1/SignIn")
+@RequestMapping(path = "api/v1/users")
 public class UserController {
 
     @Autowired
