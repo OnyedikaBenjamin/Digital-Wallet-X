@@ -11,7 +11,7 @@ public interface RegistrationService {
 
     String verifyOTP(VerifyOTPRequest verifyOTPRequest);
 
-    String resendVerificationOTP(SendOTPRequest sendOTPRequest);
+    String resendVerificationOTP(SendOTPRequest sendOTPRequest) throws MessagingException;
 
 
 }

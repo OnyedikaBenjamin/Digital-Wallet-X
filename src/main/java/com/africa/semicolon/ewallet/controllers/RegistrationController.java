@@ -1,6 +1,7 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
+import com.africa.semicolon.ewallet.dtos.request.SendOTPRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
 import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
@@ -46,7 +47,25 @@ public class RegistrationController {
                 .timeStamp(ZonedDateTime.now())
                 .path(httpServletRequest.getRequestURI())
                 .data(registrationService.verifyOTP(verifyOTPRequest))
-                .isSuccessful(true).build();
+                .isSuccessful(true)
+                .build();
+
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+
+    @PostMapping("/resend-OTP")
+    public ResponseEntity<?>resendVerificationOTP(@RequestBody SendOTPRequest sendOTPRequest, HttpServletRequest httpServletRequest) throws MessagingException{
+        var oTP = registrationService.resendVerificationOTP(sendOTPRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .path(httpServletRequest.getRequestURI())
+                .isSuccessful(true)
+                .data(oTP)
+                .statusCode(HttpStatus.OK.value())
+                .build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 }
