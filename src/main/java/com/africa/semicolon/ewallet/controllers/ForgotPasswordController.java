@@ -47,10 +47,10 @@ public class ForgotPasswordController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    @PutMapping("/reset-password/{emailAddress}")
-    public ResponseEntity<?> resetPassword(@PathVariable("emailAddress") String emailAddress, ResetPasswordRequest resetPasswordRequest,
+    @PutMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest,
                                             HttpServletRequest httpServletRequest){
-        String response = resetPasswordService.resetPassword(emailAddress,resetPasswordRequest);
+        String response = resetPasswordService.resetPassword(resetPasswordRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(response)

@@ -9,6 +9,6 @@ public interface ResetPasswordService {
     String emailOTP(SendOTPRequest sendOTPRequest) throws MessagingException;
     String verifyOTP(VerifyOTPRequest verifyOTPRequest);
 
-    String resetPassword(String email, ResetPasswordRequest resetPasswordRequest);
+    String resetPassword(ResetPasswordRequest resetPasswordRequest);
 
 }
