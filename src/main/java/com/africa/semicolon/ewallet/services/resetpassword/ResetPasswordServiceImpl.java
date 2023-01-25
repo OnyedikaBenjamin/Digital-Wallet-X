@@ -66,8 +66,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService{
     }
 
     @Override
-    public String resetPassword(String emailAddress, ResetPasswordRequest resetPasswordRequest) {
-        User foundUser = userService.findUserByEmailAddress(emailAddress).get();
+    public String resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        User foundUser = userService.findUserByEmailAddress(resetPasswordRequest.getEmailAddress()).get();
         if (!Objects.equals(resetPasswordRequest.getPassword(), resetPasswordRequest.getConfirmPassword()))throw new GenericHandlerException(
                 "Password doesn't match"
         );

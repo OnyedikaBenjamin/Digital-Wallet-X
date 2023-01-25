@@ -39,7 +39,7 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<?>verifyOTP(@RequestBody VerifyOTPRequest verifyOTPRequest,
-                                      HttpServletRequest httpServletRequest) throws MessagingException{
+                                      HttpServletRequest httpServletRequest){
 
         registrationService.verifyOTP(verifyOTPRequest);
         ApiResponse apiResponse = ApiResponse.builder()

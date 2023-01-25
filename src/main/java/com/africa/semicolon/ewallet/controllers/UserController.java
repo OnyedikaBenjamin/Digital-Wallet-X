@@ -1,6 +1,7 @@
-package com.africa.semicolon.ewallet.services.user;
+package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
+import com.africa.semicolon.ewallet.services.user.UserService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
