@@ -1,8 +1,10 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
+import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
 import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,5 +34,19 @@ public class RegistrationController {
                 .build();
 
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/verify")
+    public ResponseEntity<?>verifyOTP(@RequestBody VerifyOTPRequest verifyOTPRequest,
+                                      HttpServletRequest httpServletRequest) throws MessagingException{
+
+        registrationService.verifyOTP(verifyOTPRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .path(httpServletRequest.getRequestURI())
+                .data(registrationService.verifyOTP(verifyOTPRequest))
+                .isSuccessful(true).build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }
