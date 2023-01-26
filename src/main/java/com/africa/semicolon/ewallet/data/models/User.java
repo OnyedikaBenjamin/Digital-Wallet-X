@@ -47,6 +47,8 @@ public class User {
     @JoinColumn(name = "kyc_id", referencedColumnName = "id")
     private KYC kyc;
 
+    private Long BVN;
+
 
 
 
