@@ -1,5 +1,6 @@
 package com.africa.semicolon.ewallet.data.models;
 
+import com.africa.semicolon.ewallet.enums.CARD_STATUS;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,8 +28,7 @@ public class Card {
     private Long id;
 
     @NotNull(message = "This field is required")
-    @NotBlank(message = "This field is required")
-    private String cardName;
+    @NotBlank(message = "This field is required")    private String cardName;
     @NotEmpty(message = "This field is not required")
     @NotBlank(message = "This field is required")
     private String cardNumber;
@@ -38,6 +38,7 @@ public class Card {
     @NotNull(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cvv;
+    private CARD_STATUS card_status = CARD_STATUS.ACTIVE;
 
 
 
