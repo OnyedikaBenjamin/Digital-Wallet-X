@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +29,9 @@ public class Card {
     @NotNull(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cardName;
-
-    private Long cardNumber;
+    @NotEmpty(message = "This field is not required")
+    @NotBlank(message = "This field is required")
+    private String cardNumber;
 
     private LocalDate expiryDate;
 
