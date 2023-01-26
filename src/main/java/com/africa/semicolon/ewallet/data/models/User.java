@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -34,6 +36,20 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isDisabled = true;
+
+    @OneToMany
+    @JoinColumn(name = "card_Id", referencedColumnName = "id")
+    private List<Card> cardList ;
+    @OneToOne
+    @JoinColumn(name = "nextOfKin_Id", referencedColumnName = "id")
+    private NextOfKin nextOfKin;
+    @OneToOne
+    @JoinColumn(name = "kyc_id", referencedColumnName = "id")
+    private KYC kyc;
+
+
+
+
 
 
     public User(String firstName, String lastName, String emailAddress,  String password, Role role) {
