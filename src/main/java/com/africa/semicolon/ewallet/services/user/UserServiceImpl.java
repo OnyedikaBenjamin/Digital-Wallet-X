@@ -1,14 +1,18 @@
 package com.africa.semicolon.ewallet.services.user;
 
+import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.data.models.VerificationOTP;
 import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
+import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
+import com.africa.semicolon.ewallet.enums.CardStatus;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
 
+import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,6 +28,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private CardService cardService;
     @Autowired
     private VerificationOTPService verificationOTPService;
     @Autowired
@@ -44,6 +51,25 @@ public class UserServiceImpl implements UserService{
     public void saveUser(User user) {
         userRepo.save(user);
     }
+
+    @Override
+    public List<Card> viewCards(Long userId) {
+        return userRepo.findById(userId).
+                get().getCardList().
+                stream().
+                filter(cards->cards.getCardStatus().equals(CardStatus.ACTIVE)).
+                toList();
+    }
+
+    @Override
+    public String addCard(AddCardRequest addCardRequest) {
+        User foundUser = userRepo.findUserByEmailAddressIgnoreCase(addCardRequest.getEmailAddress()).get();
+        Card newCard = cardService.addCard(addCardRequest.getCard());
+        foundUser.getCardList().add(newCard);
+        saveUser(foundUser);
+        return "Card added successfully";
+    }
+
 
     @Override
     public String login(LoginRequest loginRequest) {
