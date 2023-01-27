@@ -1,5 +1,7 @@
 package com.africa.semicolon.ewallet.controllers;
 
+import com.africa.semicolon.ewallet.data.models.Card;
+import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
 import com.africa.semicolon.ewallet.services.user.UserService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/users")
@@ -41,6 +44,32 @@ public class UserController {
         ApiResponse apiResponse =       ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(changePasswordResponse)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/cards/{userId}")
+    public ResponseEntity<?>viewCards(@PathVariable("userId") Long userId,
+                                      HttpServletRequest httpServletRequest){
+        List<Card> cardList = userService.viewCards(userId);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(cardList)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
+
+    }
+    @PutMapping("/addCard")
+    public ResponseEntity<?>addCards(@RequestBody AddCardRequest addCardRequest, HttpServletRequest httpServletRequest){
+        String putCard = userService.addCard(addCardRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(putCard)
                 .path(httpServletRequest.getRequestURI())
                 .statusCode(HttpStatus.OK.value())
                 .isSuccessful(true)

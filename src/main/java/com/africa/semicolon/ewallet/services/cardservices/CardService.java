@@ -6,8 +6,11 @@ import com.africa.semicolon.ewallet.dtos.request.EditCardRequest;
 public interface CardService {
 
     Card addCard(Card card);
-    void deleteCard(Card card);
+    String deleteCard(Long cardId);
     String verifyCard(String cardNumber);
     void editCard(EditCardRequest editCardRequest);
+
+//    List<Card> viewCards(Long userId);
+    Card viewCardById(Long cardId);
 
 }

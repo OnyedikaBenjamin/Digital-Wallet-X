@@ -1,5 +1,5 @@
 package com.africa.semicolon.ewallet.enums;
 
-public enum CARD_STATUS {
+public enum CardStatus {
     ACTIVE, DELETED;
 }
