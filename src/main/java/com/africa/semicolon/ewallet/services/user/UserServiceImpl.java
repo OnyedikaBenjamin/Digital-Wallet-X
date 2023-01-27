@@ -5,6 +5,7 @@ import com.africa.semicolon.ewallet.data.models.VerificationOTP;
 import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
+import com.africa.semicolon.ewallet.dtos.request.AccountVerificationRequest;
 import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
@@ -15,11 +16,21 @@ import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +45,7 @@ public class UserServiceImpl implements UserService{
     private VerificationOTPService verificationOTPService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private final String SECRET_KEY = System.getenv("PAYSTACK_SECRET_KEY");
     @Override
     public String createAccount(User user) {
         saveUser(user);
@@ -62,12 +74,46 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String addCard(AddCardRequest addCardRequest) {
+    public String addCard(AddCardRequest addCardRequest) throws ParseException {
         User foundUser = userRepo.findUserByEmailAddressIgnoreCase(addCardRequest.getEmailAddress()).get();
         Card newCard = cardService.addCard(addCardRequest.getCard());
         foundUser.getCardList().add(newCard);
         saveUser(foundUser);
         return "Card added successfully";
+    }
+
+    @Override
+    public Object verifyReceiverAccount(AccountVerificationRequest accountVerificationRequest) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://api.paystack.co/bank/resolve?account_number="+accountVerificationRequest.getAccountNumber()
+                        +"&bank_code="+accountVerificationRequest.getBankCode())
+                .get()
+                .addHeader("Authorization", "Bearer "+SECRET_KEY)
+                .build();
+       try (ResponseBody response = client.newCall(request).execute().body()){
+           JsonFactory jsonFactory = new JsonFactory();
+           ObjectMapper mapper = new ObjectMapper(jsonFactory);
+           return mapper.readTree(response.string());
+       }
+
+    }
+
+    @Override
+    public Object getListOfBanks() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://api.paystack.co/bank?currency=NGN")
+                .get()
+                .addHeader("Authorization", "Bearer "+SECRET_KEY)
+                .build();
+        try (ResponseBody response = client.newCall(request).execute().body()){
+            JsonFactory jsonFactory = new JsonFactory();
+            ObjectMapper mapper = new ObjectMapper(jsonFactory);
+            return mapper.readTree(response.string());
+        }
     }
 
 
