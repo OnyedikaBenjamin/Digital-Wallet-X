@@ -3,10 +3,7 @@ package com.africa.semicolon.ewallet.services.user;
 import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.data.models.User;
 
-import com.africa.semicolon.ewallet.dtos.request.AccountVerificationRequest;
-import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
-import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
-import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
+import com.africa.semicolon.ewallet.dtos.request.*;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,4 +24,5 @@ public interface UserService {
     String addCard(AddCardRequest addCardRequest) throws ParseException;
     Object verifyReceiverAccount(AccountVerificationRequest accountVerificationRequest) throws IOException;
     Object getListOfBanks() throws IOException;
+    Object bvnValidation(BvnValidationRequest bvnValidationRequest) throws IOException;
 }

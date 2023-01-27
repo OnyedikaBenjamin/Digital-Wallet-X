@@ -29,6 +29,9 @@ public class Card {
     @NotNull(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cardName;
+    @NotNull(message = "This field is required")
+    @NotBlank(message = "This field is required")
+    private String accountNumber;
     @NotEmpty(message = "This field is not required")
     @NotBlank(message = "This field is required")
     private String cardNumber;
