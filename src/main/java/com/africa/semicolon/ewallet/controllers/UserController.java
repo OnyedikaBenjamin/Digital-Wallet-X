@@ -1,6 +1,7 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.data.models.Card;
+import com.africa.semicolon.ewallet.dtos.request.AccountVerificationRequest;
 import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -65,7 +68,7 @@ public class UserController {
 
     }
     @PutMapping("/addCard")
-    public ResponseEntity<?>addCards(@RequestBody AddCardRequest addCardRequest, HttpServletRequest httpServletRequest){
+    public ResponseEntity<?>addCards(@RequestBody AddCardRequest addCardRequest, HttpServletRequest httpServletRequest) throws ParseException {
         String putCard = userService.addCard(addCardRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
@@ -76,4 +79,30 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
     }
+    @GetMapping("/verify-account")
+    public ResponseEntity<?>verifyReceiversAccount(@RequestBody AccountVerificationRequest accountVerificationRequest, HttpServletRequest httpServletRequest) throws IOException {
+        Object verificationResponse = userService.verifyReceiverAccount(accountVerificationRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(verificationResponse)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-banks")
+    public ResponseEntity<?>getBanks(HttpServletRequest httpServletRequest) throws IOException {
+        Object banks = userService.getListOfBanks();
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(banks)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 }

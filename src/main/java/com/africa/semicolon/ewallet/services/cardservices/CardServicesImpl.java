@@ -21,19 +21,14 @@ public class CardServicesImpl implements CardService{
     private CardRepo cardRepo;
 
     @Override
-    public Card addCard(Card card) {
-        try {
-            String cardExpiryDate = card.getExpiryDate();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
-            simpleDateFormat.setLenient(false);
-            Date expiry = simpleDateFormat.parse(cardExpiryDate);
-            boolean expired = expiry.before(new Date());
-            if (expired)throw new GenericHandlerException("Expired card can't be added");
-            return cardRepo.save(card);
-        }
-        catch (Exception e){
-            throw new GenericHandlerException("Expired card can't be added");
-        }
+    public Card addCard(Card card) throws ParseException {
+        String cardExpiryDate = card.getExpiryDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
+        simpleDateFormat.setLenient(false);
+        Date expiry = simpleDateFormat.parse(cardExpiryDate);
+        boolean expired = expiry.before(new Date());
+        if (expired)throw new GenericHandlerException("Expired card can't be added");
+        return cardRepo.save(card);
     }
 
     @Override
