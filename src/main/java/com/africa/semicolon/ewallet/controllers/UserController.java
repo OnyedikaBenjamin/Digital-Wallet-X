@@ -1,10 +1,7 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.data.models.Card;
-import com.africa.semicolon.ewallet.dtos.request.AccountVerificationRequest;
-import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
-import com.africa.semicolon.ewallet.dtos.request.ChangePasswordRequest;
-import com.africa.semicolon.ewallet.dtos.request.LoginRequest;
+import com.africa.semicolon.ewallet.dtos.request.*;
 import com.africa.semicolon.ewallet.services.user.UserService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -98,6 +95,18 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(banks)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @PostMapping("/bvn-validation")
+    public ResponseEntity<?>bvnValidation(@RequestBody BvnValidationRequest bvnValidationRequest, HttpServletRequest httpServletRequest) throws IOException {
+        Object response = userService.bvnValidation(bvnValidationRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(response)
                 .path(httpServletRequest.getRequestURI())
                 .statusCode(HttpStatus.OK.value())
                 .isSuccessful(true)
