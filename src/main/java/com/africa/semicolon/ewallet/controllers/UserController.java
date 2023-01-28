@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "api/v1/users")
 public class UserController {
 

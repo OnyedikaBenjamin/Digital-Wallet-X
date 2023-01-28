@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "api/v1/card")
 public class CardController {
 
