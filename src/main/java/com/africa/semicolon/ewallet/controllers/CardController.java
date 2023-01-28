@@ -1,14 +1,17 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.data.models.Card;
+import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -44,5 +47,21 @@ public class CardController {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/verify-card")
+    public ResponseEntity<?>verifyCard(@RequestBody VerifyCardRequest verifyCardRequest,
+                                       HttpServletRequest httpServletRequest) throws IOException {
+        Object verifyCard = cardService.verifyCard(verifyCardRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(verifyCard)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
     }
 
