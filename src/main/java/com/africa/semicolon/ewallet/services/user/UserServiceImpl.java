@@ -6,6 +6,10 @@ import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
 import com.africa.semicolon.ewallet.dtos.request.*;
+import com.africa.semicolon.ewallet.dtos.response.accountverificationpaystackresponse.AccountVerificationPaystackResponse;
+import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.Bank;
+import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.BankCodePaystackResponse;
+import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.enums.CardStatus;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
@@ -14,6 +18,7 @@ import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.*;
 import lombok.extern.slf4j.Slf4j;
@@ -88,11 +93,15 @@ public class UserServiceImpl implements UserService{
                 .get()
                 .addHeader("Authorization", "Bearer "+SECRET_KEY)
                 .build();
-       try (ResponseBody response = client.newCall(request).execute().body()){
-           JsonFactory jsonFactory = new JsonFactory();
-           ObjectMapper mapper = new ObjectMapper(jsonFactory);
-           return mapper.readTree(response.string());
-       }
+        try (ResponseBody response = client.newCall(request).execute().body()) {
+            if (!client.newCall(request).execute().isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), AccountVerificationPaystackResponse.class);
+
+        }
 
     }
 
@@ -135,14 +144,34 @@ public class UserServiceImpl implements UserService{
                 .addHeader("Content-Type", "application/json")
                 .build();
         try (ResponseBody response = client.newCall(request).execute().body()){
-            JsonFactory jsonFactory = new JsonFactory();
-            ObjectMapper mapper = new ObjectMapper(jsonFactory);
-            return mapper.readTree(response.string());
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), BVNValidationPaystackResponse.class);
+
         }
 
+    }
 
-//        Response response = client.newCall(request).execute();
-//        log.info(response.body().string());
+    @Override
+    public String getBankCode(BankCodeRequest bankCodeRequest) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://api.paystack.co/bank?currency=NGN")
+                .get()
+                .addHeader("Authorization", "Bearer "+SECRET_KEY)
+                .build();
+        try (ResponseBody response = client.newCall(request).execute().body()){
+            ObjectMapper mapper = new ObjectMapper();
+            BankCodePaystackResponse bankCodePaystackResponse = mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), BankCodePaystackResponse.class);
+
+            for (Bank bank : bankCodePaystackResponse.getData()) {
+                if(bank.getName().equals(bankCodeRequest.getBank_name())){
+                    return bank.getCode();
+                }
+            }
+        }
+        return null;
 
     }
 

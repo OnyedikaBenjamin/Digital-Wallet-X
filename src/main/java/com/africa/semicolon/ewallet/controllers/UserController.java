@@ -114,4 +114,18 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/get-code")
+    public ResponseEntity<?>getBankCode(@RequestBody BankCodeRequest bankCodeRequest,
+                                        HttpServletRequest httpServletRequest) throws IOException {
+        Object bankCode = userService.getBankCode(bankCodeRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(bankCode)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 }
