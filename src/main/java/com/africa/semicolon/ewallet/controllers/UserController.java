@@ -141,4 +141,17 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/transfer")
+    public ResponseEntity<?>initiateTransfer(@RequestBody InitiateTransferRequest initiateTransferRequest, HttpServletRequest httpServletRequest) throws IOException {
+        Object response = userService.initiateTransfer(initiateTransferRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(response)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 }
