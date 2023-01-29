@@ -42,7 +42,7 @@ public class UserController {
     @PutMapping("/change-password")
     public ResponseEntity<?>changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, HttpServletRequest httpServletRequest) {
         String changePasswordResponse = userService.changePassword(changePasswordRequest);
-        ApiResponse apiResponse =       ApiResponse.builder()
+        ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(changePasswordResponse)
                 .path(httpServletRequest.getRequestURI())
@@ -122,6 +122,18 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(bankCode)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @PostMapping("/transfer-recipient")
+    public ResponseEntity<?>createTransferRecipient(@RequestBody CreateTransferRecipientRequest createTransferRecipientRequest, HttpServletRequest httpServletRequest) throws IOException {
+        Object response = userService.createTransferRecipient(createTransferRecipientRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(response)
                 .path(httpServletRequest.getRequestURI())
                 .statusCode(HttpStatus.OK.value())
                 .isSuccessful(true)

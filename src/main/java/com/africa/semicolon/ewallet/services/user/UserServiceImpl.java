@@ -10,6 +10,7 @@ import com.africa.semicolon.ewallet.dtos.response.accountverificationpaystackres
 import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.Bank;
 import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.BankCodePaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
+import com.africa.semicolon.ewallet.dtos.response.createtransferrecipientpaystackresponse.CreateTransferRecipientPaystackResponse;
 import com.africa.semicolon.ewallet.enums.CardStatus;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
@@ -172,6 +173,43 @@ public class UserServiceImpl implements UserService{
             }
         }
         return null;
+
+    }
+
+    @Override
+    public Object createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("type", "nuban");
+            AccountVerificationRequest accountVerificationRequest = new AccountVerificationRequest();
+            accountVerificationRequest.setAccountNumber(createTransferRecipientRequest.getAccountNumber());
+            BankCodeRequest bankCodeRequest = new BankCodeRequest();
+            bankCodeRequest.setBank_name(createTransferRecipientRequest.getBankName());
+            accountVerificationRequest.setBankCode(getBankCode(bankCodeRequest));
+            json.put("name", verifyReceiverAccount(accountVerificationRequest));
+            json.put("account_number", createTransferRecipientRequest.getAccountNumber());
+            json.put("bank_code", getBankCode(bankCodeRequest));
+            json.put("currency", "NGN");
+        } catch (JSONException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        RequestBody body = RequestBody.create(mediaType, json.toString());
+
+        Request request = new Request.Builder()
+                .url("https://api.paystack.co/transferrecipient")
+                .post(body)
+                .addHeader("Authorization", "Bearer " + SECRET_KEY)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try (ResponseBody response = client.newCall(request).execute().body()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), CreateTransferRecipientPaystackResponse.class);
+
+        }
 
     }
 
