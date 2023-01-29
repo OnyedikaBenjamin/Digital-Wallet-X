@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -206,11 +207,44 @@ public class UserServiceImpl implements UserService{
                 .build();
         try (ResponseBody response = client.newCall(request).execute().body()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            CreateTransferRecipientPaystackResponse createTransferRecipientPaystackResponse = objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     .readValue(response.string(), CreateTransferRecipientPaystackResponse.class);
+            return createTransferRecipientPaystackResponse.getData().getRecipient_code();
 
         }
 
+    }
+
+    @Override
+    public Object initiateTransfer(InitiateTransferRequest initiateTransferRequest) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        String uuid = UUID.randomUUID().toString();
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("source", "balance");
+            json.put("amount", initiateTransferRequest.getAmount());
+            json.put("reference", uuid);
+            json.put("recipient", createTransferRecipient(initiateTransferRequest.getCreateTransferRecipientRequest()));
+            json.put("reason", initiateTransferRequest.getReason());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        RequestBody body = RequestBody.create(mediaType, json.toString());
+
+        Request request = new Request.Builder()
+                .url("https://api.paystack.co/transfer")
+                .post(body)
+                .addHeader("Authorization", "Bearer " + SECRET_KEY)
+                .addHeader("Content-Type", "application/json")
+                .build();
+//
+        try (ResponseBody response = client.newCall(request).execute().body()){
+            JsonFactory jsonFactory = new JsonFactory();
+            ObjectMapper mapper = new ObjectMapper(jsonFactory);
+            return mapper.readTree(response.string());
+        }
     }
 
 
