@@ -43,6 +43,7 @@ public class RegistrationController {
         registrationService.verifyOTP(verifyOTPRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
+                .statusCode(HttpStatus.OK.value())
                 .path(httpServletRequest.getRequestURI())
                 .data(registrationService.verifyOTP(verifyOTPRequest))
                 .isSuccessful(true)

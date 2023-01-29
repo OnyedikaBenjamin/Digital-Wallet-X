@@ -26,5 +26,6 @@ public interface UserService {
     Object getListOfBanks() throws IOException;
     Object bvnValidation(BvnValidationRequest bvnValidationRequest) throws IOException;
     String getBankCode(BankCodeRequest bankCodeRequest) throws IOException;
+    Object createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException;
 
 }
