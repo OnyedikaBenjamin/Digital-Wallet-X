@@ -276,6 +276,7 @@ public class UserServiceImpl implements UserService{
         foundUser.setNextOfKin(addedNextOfKin);
         userRepo.save(foundUser);
         return "user information updated successfully!";
+    }
     @Override
     public String deleteUser(Long userId, DeleteUserRequest deleteUserRequest) {
         User foundUser = userRepo.findById(userId).get();
