@@ -133,8 +133,10 @@ public class UserServiceImpl implements UserService{
 
             JSONObject json = new JSONObject();
             try{
+                BankCodeRequest bankCodeRequest = new BankCodeRequest();
+                bankCodeRequest.setBank_name(bvnValidationRequest.getBankName());
                 json.put("bvn", bvnValidationRequest.getBvn());
-                json.put("bank_code", bvnValidationRequest.getBankCode());
+                json.put("bank_code", getBankCode(bankCodeRequest));
                 json.put("account_number", bvnValidationRequest.getAccountNumber());
             } catch (JSONException e) {
                 throw new RuntimeException(e);

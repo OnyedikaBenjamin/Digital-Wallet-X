@@ -8,5 +8,5 @@ import lombok.Setter;
 public class BvnValidationRequest {
     private String accountNumber;
     private String bvn;
-    private String bankCode;
+    private String bankName;
 }
