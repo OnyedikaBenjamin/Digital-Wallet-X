@@ -12,6 +12,7 @@ import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.BankCodePayst
 import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.createtransferrecipientpaystackresponse.CreateTransferRecipientPaystackResponse;
 
+import com.africa.semicolon.ewallet.dtos.response.getbankspaystackresponse.GetBanksPaystackResponse;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
 
@@ -118,11 +119,19 @@ public class UserServiceImpl implements UserService{
                 .get()
                 .addHeader("Authorization", "Bearer "+SECRET_KEY)
                 .build();
+
         try (ResponseBody response = client.newCall(request).execute().body()){
             JsonFactory jsonFactory = new JsonFactory();
-            ObjectMapper mapper = new ObjectMapper(jsonFactory);
-            return mapper.readTree(response.string());
+            ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+            GetBanksPaystackResponse getBanksPaystackResponse
+                    = objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), GetBanksPaystackResponse.class);
+
+            return getBanksPaystackResponse.getData();
+
         }
+
+
     }
 
     @Override
