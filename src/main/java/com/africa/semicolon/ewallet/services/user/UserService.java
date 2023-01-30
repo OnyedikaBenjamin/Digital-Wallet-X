@@ -29,4 +29,6 @@ public interface UserService {
     Object createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException;
     Object initiateTransfer(InitiateTransferRequest initiateTransferRequest) throws IOException;
 
+    String deleteUser(Long userId, DeleteUserRequest deleteUserRequest);
+
 }
