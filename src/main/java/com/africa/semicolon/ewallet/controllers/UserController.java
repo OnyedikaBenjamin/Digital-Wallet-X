@@ -167,4 +167,19 @@ public class UserController {
 
     }
 
+    @PutMapping("/update-user-info/{userId}")
+    public ResponseEntity<?>updateUserInformation(@PathVariable("userId") Long userId, @RequestBody  UpdateUserInfoRequest updateUserInfoRequest,
+                                                  HttpServletRequest httpServletRequest) throws ParseException, IOException {
+        String userInformation = userService.UpdateUserInfo(userId, updateUserInfoRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(userInformation)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
+    }
+
+
 }

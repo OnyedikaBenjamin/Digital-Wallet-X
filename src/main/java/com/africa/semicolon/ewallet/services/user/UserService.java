@@ -28,6 +28,7 @@ public interface UserService {
     String getBankCode(BankCodeRequest bankCodeRequest) throws IOException;
     Object createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException;
     Object initiateTransfer(InitiateTransferRequest initiateTransferRequest) throws IOException;
+    String UpdateUserInfo(Long userId, UpdateUserInfoRequest updateUserInfoRequest) throws ParseException, IOException;
 
     String deleteUser(Long userId, DeleteUserRequest deleteUserRequest);
 

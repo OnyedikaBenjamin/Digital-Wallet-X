@@ -1,8 +1,6 @@
 package com.africa.semicolon.ewallet.services.user;
 
-import com.africa.semicolon.ewallet.data.models.Card;
-import com.africa.semicolon.ewallet.data.models.VerificationOTP;
-import com.africa.semicolon.ewallet.data.models.User;
+import com.africa.semicolon.ewallet.data.models.*;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
 import com.africa.semicolon.ewallet.dtos.request.*;
@@ -17,6 +15,8 @@ import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
 
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
+import com.africa.semicolon.ewallet.services.kycservices.KYCService;
+import com.africa.semicolon.ewallet.services.nextofkinservices.NextOfKinService;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -49,6 +49,10 @@ public class UserServiceImpl implements UserService{
     private VerificationOTPService verificationOTPService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private KYCService kycService;
+    @Autowired
+    private NextOfKinService nextOfKinService;
     private final String SECRET_KEY = System.getenv("PAYSTACK_SECRET_KEY");
     @Override
     public String createAccount(User user) {
@@ -77,12 +81,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public String addCard(Long userId, AddCardRequest addCardRequest) throws ParseException, IOException {
         User foundUser = userRepo.findById(userId).get();
-        Card card = new Card();
-        card.setCardName(addCardRequest.getCardName());
-        card.setCardNumber(addCardRequest.getCardNumber());
-        card.setExpiryDate(addCardRequest.getExpiryDate());
-        card.setCvv(addCardRequest.getCvv());
-        Card newCard = cardService.addCard(card);
+//        Card card = new Card();
+//        card.setCardName(addCardRequest.getCardName());
+//        card.setCardNumber(addCardRequest.getCardNumber());
+//        card.setExpiryDate(addCardRequest.getExpiryDate());
+//        card.setCvv(addCardRequest.getCvv());
+//        Card newCard = cardService.addCard(card);
+        Card newCard = cardService.addCard(addCardRequest);
         foundUser.getCardList().add(newCard);
         saveUser(foundUser);
         return "Card added successfully";
@@ -260,6 +265,17 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public String UpdateUserInfo(Long userId, UpdateUserInfoRequest updateUserInfoRequest) throws ParseException, IOException {
+        User foundUser = userRepo.findById(userId).get();
+        Card addedCard = cardService.addCard(updateUserInfoRequest.getAddCardRequest());
+        KYC addedKyc = kycService.addKYC(updateUserInfoRequest.getKycRequest());
+        NextOfKin addedNextOfKin = nextOfKinService.addNextOfKin(updateUserInfoRequest.getNextOfKinRequest());
+        foundUser.getCardList().add(addedCard);
+        foundUser.setKyc(addedKyc);
+        foundUser.setNextOfKin(addedNextOfKin);
+        userRepo.save(foundUser);
+        return "user information updated successfully!";
     @Override
     public String deleteUser(Long userId, DeleteUserRequest deleteUserRequest) {
         User foundUser = userRepo.findById(userId).get();

@@ -38,7 +38,7 @@ public class User {
     private Boolean isDisabled = true;
 
     @OneToMany
-    @JoinColumn(name = "card_Id", referencedColumnName = "id")
+    @JoinColumn(name = "user_Id", referencedColumnName = "id")
     private List<Card> cardList ;
     @OneToOne
     @JoinColumn(name = "nextOfKin_Id", referencedColumnName = "id")

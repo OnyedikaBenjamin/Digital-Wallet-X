@@ -2,6 +2,7 @@ package com.africa.semicolon.ewallet.services.cardservices;
 
 import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.data.repositories.CardRepo;
+import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.EditCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
 import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
@@ -33,19 +34,24 @@ public class CardServicesImpl implements CardService{
     private CardRepo cardRepo;
 
     @Override
-    public Card addCard(Card card) throws ParseException, IOException {
+    public Card addCard(AddCardRequest addCardRequest) throws ParseException, IOException {
         VerifyCardRequest verifyCardRequest = new VerifyCardRequest();
-        verifyCardRequest.setCardNumber(card.getCardNumber());
+        verifyCardRequest.setCardNumber(addCardRequest.getCardNumber());
         verifyCard(verifyCardRequest);
-        cardExpiryDateVerification(card);
+        cardExpiryDateVerification(addCardRequest.getExpiryDate());
+        if (cardRepo.findCardByCardNumber(addCardRequest.getCardNumber()).isPresent())throw new GenericHandlerException("Card already exist");
+        Card card = new Card();
+        card.setCardName(addCardRequest.getCardName());
+        card.setCardNumber(addCardRequest.getCardNumber());
+        card.setExpiryDate(addCardRequest.getExpiryDate());
+        card.setCvv(addCardRequest.getCvv());
         return cardRepo.save(card);
     }
 
-    private void cardExpiryDateVerification(Card card) throws ParseException {
-        String cardExpiryDate = card.getExpiryDate();
+    private void cardExpiryDateVerification(String expiryDate) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
         simpleDateFormat.setLenient(false);
-        Date expiry = simpleDateFormat.parse(cardExpiryDate);
+        Date expiry = simpleDateFormat.parse(expiryDate);
         boolean expired = expiry.before(new Date());
         if (expired)throw new GenericHandlerException("Expired card can't be added");
     }
