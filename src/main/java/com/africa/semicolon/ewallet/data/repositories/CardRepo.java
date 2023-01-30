@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface CardRepo extends JpaRepository<Card, Long>{
+
+
 }
