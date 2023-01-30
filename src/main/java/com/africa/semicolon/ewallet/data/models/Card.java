@@ -21,7 +21,7 @@ public class Card {
     @NotNull(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cardName;
-    @NotEmpty(message = "This field is not required")
+    @NotEmpty(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cardNumber;
     private String expiryDate;
