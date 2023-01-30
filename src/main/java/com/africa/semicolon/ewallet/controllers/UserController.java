@@ -65,9 +65,9 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
 
     }
-    @PutMapping("/addCard")
-    public ResponseEntity<?>addCards(@RequestBody AddCardRequest addCardRequest, HttpServletRequest httpServletRequest) throws ParseException {
-        String putCard = userService.addCard(addCardRequest);
+    @PutMapping("/addCard/{userId}")
+    public ResponseEntity<?>addCards(@PathVariable("userId") Long userId, @RequestBody AddCardRequest addCardRequest, HttpServletRequest httpServletRequest) throws ParseException, IOException {
+        String putCard = userService.addCard(userId, addCardRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(putCard)
