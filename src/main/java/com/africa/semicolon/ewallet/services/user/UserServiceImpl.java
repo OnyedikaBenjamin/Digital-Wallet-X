@@ -276,6 +276,16 @@ public class UserServiceImpl implements UserService{
         foundUser.setNextOfKin(addedNextOfKin);
         userRepo.save(foundUser);
         return "user information updated successfully!";
+    @Override
+    public String deleteUser(Long userId, DeleteUserRequest deleteUserRequest) {
+        User foundUser = userRepo.findById(userId).get();
+        if (passwordEncoder.matches(deleteUserRequest.getPassword(), foundUser.getPassword())){
+            foundUser.setEmailAddress("deleted"+foundUser.getEmailAddress()+UUID.randomUUID());
+            foundUser.getCardList().clear();
+            saveUser(foundUser);
+        }
+        else throw new GenericHandlerException("Incorrect Password");
+        return "Account deleted successfully";
     }
 
 

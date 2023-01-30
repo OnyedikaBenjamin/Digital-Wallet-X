@@ -153,6 +153,19 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+    @DeleteMapping("/delete-user/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable("userId")Long userId, @RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest httpServletRequest){
+        Object response = userService.deleteUser(userId,deleteUserRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data(response)
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+    }
 
     @PutMapping("/update-user-info/{userId}")
     public ResponseEntity<?>updateUserInformation(@PathVariable("userId") Long userId, @RequestBody  UpdateUserInfoRequest updateUserInfoRequest,
