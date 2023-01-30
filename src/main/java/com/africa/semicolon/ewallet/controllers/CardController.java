@@ -4,7 +4,6 @@ import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

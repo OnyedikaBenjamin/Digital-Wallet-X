@@ -4,8 +4,11 @@ import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.data.repositories.CardRepo;
 import com.africa.semicolon.ewallet.dtos.request.EditCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
+import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
+import com.africa.semicolon.ewallet.dtos.response.cardverificationpaystackresponse.CardVerificationPaystackResponse;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.OkHttpClient;
@@ -62,10 +65,15 @@ public class CardServicesImpl implements CardService{
                 .build();
 
         try (ResponseBody response = client.newCall(request).execute().body()){
-            JsonFactory jsonFactory = new JsonFactory();
-            ObjectMapper mapper = new ObjectMapper(jsonFactory);
-            return mapper.readTree(response.string());
+            ObjectMapper objectMapper = new ObjectMapper();
+            CardVerificationPaystackResponse cardVerificationPaystackResponse
+                    = objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .readValue(response.string(), CardVerificationPaystackResponse.class);
+            if (cardVerificationPaystackResponse.getData().getLinked_bank_id() == null)throw new GenericHandlerException("Invalid card");
+            return cardVerificationPaystackResponse.getData().getLinked_bank_id();
+
         }
+
     }
 
     @Override
