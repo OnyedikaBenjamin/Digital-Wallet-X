@@ -11,7 +11,7 @@ import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.Bank;
 import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.BankCodePaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.createtransferrecipientpaystackresponse.CreateTransferRecipientPaystackResponse;
-import com.africa.semicolon.ewallet.enums.CardStatus;
+
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 
 
@@ -70,16 +70,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Card> viewCards(Long userId) {
         return userRepo.findById(userId).
-                get().getCardList().
-                stream().
-                filter(cards->cards.getCardStatus().equals(CardStatus.ACTIVE)).
-                toList();
+                get().getCardList();
     }
 
     @Override
-    public String addCard(AddCardRequest addCardRequest) throws ParseException {
-        User foundUser = userRepo.findUserByEmailAddressIgnoreCase(addCardRequest.getEmailAddress()).get();
-        Card newCard = cardService.addCard(addCardRequest.getCard());
+    public String addCard(Long userId, AddCardRequest addCardRequest) throws ParseException, IOException {
+        User foundUser = userRepo.findById(userId).get();
+        Card card = new Card();
+        card.setCardName(addCardRequest.getCardName());
+        card.setCardNumber(addCardRequest.getCardNumber());
+        card.setExpiryDate(addCardRequest.getExpiryDate());
+        card.setCvv(addCardRequest.getCvv());
+        Card newCard = cardService.addCard(card);
         foundUser.getCardList().add(newCard);
         saveUser(foundUser);
         return "Card added successfully";
@@ -239,7 +241,7 @@ public class UserServiceImpl implements UserService{
                 .addHeader("Authorization", "Bearer " + SECRET_KEY)
                 .addHeader("Content-Type", "application/json")
                 .build();
-//
+
         try (ResponseBody response = client.newCall(request).execute().body()){
             JsonFactory jsonFactory = new JsonFactory();
             ObjectMapper mapper = new ObjectMapper(jsonFactory);

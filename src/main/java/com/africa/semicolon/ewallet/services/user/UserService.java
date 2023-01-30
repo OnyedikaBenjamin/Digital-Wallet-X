@@ -21,7 +21,7 @@ public interface UserService {
     void saveUser(User user);
 
     List<Card> viewCards(Long userId);
-    String addCard(AddCardRequest addCardRequest) throws ParseException;
+    String addCard(Long userId, AddCardRequest addCardRequest) throws ParseException, IOException;
     Object verifyReceiverAccount(AccountVerificationRequest accountVerificationRequest) throws IOException;
     Object getListOfBanks() throws IOException;
     Object bvnValidation(BvnValidationRequest bvnValidationRequest) throws IOException;

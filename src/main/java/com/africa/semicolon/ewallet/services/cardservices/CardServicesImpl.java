@@ -23,7 +23,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.africa.semicolon.ewallet.enums.CardStatus.*;
 
 @Service
 public class CardServicesImpl implements CardService{
@@ -34,21 +33,26 @@ public class CardServicesImpl implements CardService{
     private CardRepo cardRepo;
 
     @Override
-    public Card addCard(Card card) throws ParseException {
+    public Card addCard(Card card) throws ParseException, IOException {
+        VerifyCardRequest verifyCardRequest = new VerifyCardRequest();
+        verifyCardRequest.setCardNumber(card.getCardNumber());
+        verifyCard(verifyCardRequest);
+        cardExpiryDateVerification(card);
+        return cardRepo.save(card);
+    }
+
+    private void cardExpiryDateVerification(Card card) throws ParseException {
         String cardExpiryDate = card.getExpiryDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
         simpleDateFormat.setLenient(false);
         Date expiry = simpleDateFormat.parse(cardExpiryDate);
         boolean expired = expiry.before(new Date());
         if (expired)throw new GenericHandlerException("Expired card can't be added");
-        return cardRepo.save(card);
     }
 
     @Override
     public String deleteCard(Long cardId) {
-        Card card = cardRepo.findById(cardId).get();
-        card.setCardStatus(DELETED);
-        cardRepo.save(card);
+        cardRepo.deleteById(cardId);
         return "card deleted successfully";
     }
 
@@ -92,7 +96,6 @@ public class CardServicesImpl implements CardService{
 
     @Override
     public Card viewCardById(Long cardId) {
-        return cardRepo.findById(cardId).filter(card -> card.getCardStatus().equals(ACTIVE)).
-                orElseThrow(()-> new GenericHandlerException("Card not available"));
+        return cardRepo.findById(cardId).get();
     }
 }

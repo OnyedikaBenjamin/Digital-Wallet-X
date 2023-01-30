@@ -10,7 +10,7 @@ import java.text.ParseException;
 
 public interface CardService {
 
-    Card addCard(Card card) throws ParseException;
+    Card addCard(Card card) throws ParseException, IOException;
     String deleteCard(Long cardId);
     Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException;
     void editCard(EditCardRequest editCardRequest);

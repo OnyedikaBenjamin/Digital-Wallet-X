@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AddCardRequest {
-    private String emailAddress;
-    private Card card;
+    private String cardName;
+    private String cardNumber;
+    private String expiryDate;
+    private String cvv;
 }
