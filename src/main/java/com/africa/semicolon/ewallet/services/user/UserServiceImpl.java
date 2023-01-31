@@ -74,19 +74,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Card> viewCards(Long userId) {
-        return userRepo.findById(userId).
-                get().getCardList();
+        return cardService.viewCard(userId);
     }
 
     @Override
     public String addCard(Long userId, AddCardRequest addCardRequest) throws ParseException, IOException {
         User foundUser = userRepo.findById(userId).get();
-//        Card card = new Card();
-//        card.setCardName(addCardRequest.getCardName());
-//        card.setCardNumber(addCardRequest.getCardNumber());
-//        card.setExpiryDate(addCardRequest.getExpiryDate());
-//        card.setCvv(addCardRequest.getCvv());
-//        Card newCard = cardService.addCard(card);
         Card newCard = cardService.addCard(addCardRequest);
         foundUser.getCardList().add(newCard);
         saveUser(foundUser);
@@ -282,11 +275,11 @@ public class UserServiceImpl implements UserService{
         User foundUser = userRepo.findById(userId).get();
         if (passwordEncoder.matches(deleteUserRequest.getPassword(), foundUser.getPassword())){
             foundUser.setEmailAddress("deleted"+foundUser.getEmailAddress()+UUID.randomUUID());
-            foundUser.getCardList().clear();
+            cardService.deleteUserCards(userId);
             saveUser(foundUser);
+            return "Account deleted successfully";
         }
         else throw new GenericHandlerException("Incorrect Password");
-        return "Account deleted successfully";
     }
 
 

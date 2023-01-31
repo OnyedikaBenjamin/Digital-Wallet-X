@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -90,18 +92,22 @@ public class CardServicesImpl implements CardService{
     public void editCard(EditCardRequest editCardRequest) {
 
     }
-
-//    @Override
-//    public List<Card> viewCards(Long userId){
-//        return cardRepo.findById(userId).
-//                stream().filter(cards->cards.getCard_status().
-//                        equals(ACTIVE)).
-//                toList();
-//    }
-
-
     @Override
     public Card viewCardById(Long cardId) {
         return cardRepo.findById(cardId).get();
+    }
+
+    @Override
+    public void deleteUserCards(Long userid) {
+        cardRepo.deleteUsersCard(userid);
+    }
+
+    @Override
+    public List<Card> viewCard(Long userId) {
+        return cardRepo.findAll().
+                stream().
+                filter(card -> Objects.equals(card.getUser().getId(), userId)).
+                toList();
+
     }
 }

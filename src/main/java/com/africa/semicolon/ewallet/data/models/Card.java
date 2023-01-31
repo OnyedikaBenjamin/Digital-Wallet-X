@@ -1,4 +1,5 @@
 package com.africa.semicolon.ewallet.data.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,4 +29,7 @@ public class Card {
     @NotNull(message = "This field is required")
     @NotBlank(message = "This field is required")
     private String cvv;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 }
