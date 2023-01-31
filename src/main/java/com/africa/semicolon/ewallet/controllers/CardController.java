@@ -1,6 +1,8 @@
 package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.data.models.Card;
+import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
+import com.africa.semicolon.ewallet.dtos.request.EditCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -48,6 +51,7 @@ public class CardController {
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
     }
 
+
     @GetMapping("/verify-card")
     public ResponseEntity<?>verifyCard(@RequestBody VerifyCardRequest verifyCardRequest,
                                        HttpServletRequest httpServletRequest) throws IOException {
@@ -61,6 +65,23 @@ public class CardController {
                 .build();
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+
+
+    @PutMapping("/editCard/{cardId}")
+    public ResponseEntity<?> editCard(@PathVariable("cardId") Long cardId, @RequestBody EditCardRequest editCardRequest,
+                                      HttpServletRequest httpServletRequest) throws ParseException, IOException {
+        cardService.editCard(cardId, editCardRequest);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timeStamp(ZonedDateTime.now())
+                .data("Card updated successfully")
+                .path(httpServletRequest.getRequestURI())
+                .statusCode(HttpStatus.OK.value())
+                .isSuccessful(true)
+                .build();
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
     }
 
     }

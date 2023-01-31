@@ -5,16 +5,12 @@ import com.africa.semicolon.ewallet.data.repositories.CardRepo;
 import com.africa.semicolon.ewallet.dtos.request.AddCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.EditCardRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyCardRequest;
-import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.cardverificationpaystackresponse.CardVerificationPaystackResponse;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,9 +85,17 @@ public class CardServicesImpl implements CardService{
     }
 
     @Override
-    public void editCard(EditCardRequest editCardRequest) {
+    public void editCard(Long cardId, EditCardRequest editCardRequest) {
+            Card foundCard = cardRepo.findById(cardId).orElseThrow(() -> new GenericHandlerException("Card with id does not exist"));
+            foundCard.setCardName(editCardRequest.getCardName());
+            foundCard.setCardNumber(editCardRequest.getCardNumber());
+            foundCard.setExpiryDate(editCardRequest.getExpiryDate());
+            foundCard.setCvv(editCardRequest.getCvv());
+            cardRepo.save(foundCard);
+        }
 
-    }
+
+
     @Override
     public Card viewCardById(Long cardId) {
         return cardRepo.findById(cardId).get();
