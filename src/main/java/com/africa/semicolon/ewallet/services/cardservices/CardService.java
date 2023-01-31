@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 public interface CardService {
 
@@ -16,8 +17,9 @@ public interface CardService {
     Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException;
     void editCard(EditCardRequest editCardRequest);
 
-//    List<Card> viewCards(Long userId);
     Card viewCardById(Long cardId);
+    void deleteUserCards(Long userid);
+    List<Card> viewCard(Long userId);
 
 
 }

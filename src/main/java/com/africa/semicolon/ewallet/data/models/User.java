@@ -1,6 +1,7 @@
 package com.africa.semicolon.ewallet.data.models;
 
 import com.africa.semicolon.ewallet.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -36,8 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isDisabled = true;
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_Id", referencedColumnName = "id")
     private List<Card> cardList ;
     @OneToOne
@@ -46,12 +46,6 @@ public class User {
     @OneToOne
     @JoinColumn(name = "kyc_id", referencedColumnName = "id")
     private KYC kyc;
-
-
-
-
-
-
 
     public User(String firstName, String lastName, String emailAddress,  String password, Role role) {
         this.firstName = firstName;
