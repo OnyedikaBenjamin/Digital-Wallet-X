@@ -2,8 +2,12 @@ package com.africa.semicolon.ewallet.controllers;
 
 import com.africa.semicolon.ewallet.data.models.Card;
 import com.africa.semicolon.ewallet.dtos.request.*;
+import com.africa.semicolon.ewallet.dtos.response.accountverificationpaystackresponse.AccountVerificationPaystackResponse;
+import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.Bank;
+import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.services.user.UserService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,7 +83,7 @@ public class UserController {
     }
     @GetMapping("/verify-account")
     public ResponseEntity<?>verifyReceiversAccount(@RequestBody AccountVerificationRequest accountVerificationRequest, HttpServletRequest httpServletRequest) throws IOException {
-        Object verificationResponse = userService.verifyReceiverAccount(accountVerificationRequest);
+        AccountVerificationPaystackResponse verificationResponse = userService.verifyReceiverAccount(accountVerificationRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(verificationResponse)
@@ -92,7 +96,7 @@ public class UserController {
 
     @GetMapping("/get-banks")
     public ResponseEntity<?>getBanks(HttpServletRequest httpServletRequest) throws IOException {
-        Object banks = userService.getListOfBanks();
+        var banks = userService.getListOfBanks();
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(banks)
@@ -104,7 +108,7 @@ public class UserController {
     }
     @PostMapping("/bvn-validation")
     public ResponseEntity<?>bvnValidation(@RequestBody BvnValidationRequest bvnValidationRequest, HttpServletRequest httpServletRequest) throws IOException {
-        Object response = userService.bvnValidation(bvnValidationRequest);
+        BVNValidationPaystackResponse response = userService.bvnValidation(bvnValidationRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(response)
@@ -118,7 +122,7 @@ public class UserController {
     @GetMapping("/get-code")
     public ResponseEntity<?>getBankCode(@RequestBody BankCodeRequest bankCodeRequest,
                                         HttpServletRequest httpServletRequest) throws IOException {
-        Object bankCode = userService.getBankCode(bankCodeRequest);
+        String bankCode = userService.getBankCode(bankCodeRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(bankCode)
@@ -130,7 +134,7 @@ public class UserController {
     }
     @PostMapping("/transfer-recipient")
     public ResponseEntity<?>createTransferRecipient(@RequestBody CreateTransferRecipientRequest createTransferRecipientRequest, HttpServletRequest httpServletRequest) throws IOException {
-        Object response = userService.createTransferRecipient(createTransferRecipientRequest);
+        String response = userService.createTransferRecipient(createTransferRecipientRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(response)
@@ -143,7 +147,7 @@ public class UserController {
 
     @PostMapping("/transfer")
     public ResponseEntity<?>initiateTransfer(@RequestBody InitiateTransferRequest initiateTransferRequest, HttpServletRequest httpServletRequest) throws IOException {
-        Object response = userService.initiateTransfer(initiateTransferRequest);
+        JsonNode response = userService.initiateTransfer(initiateTransferRequest);
         ApiResponse apiResponse = ApiResponse.builder()
                 .timeStamp(ZonedDateTime.now())
                 .data(response)

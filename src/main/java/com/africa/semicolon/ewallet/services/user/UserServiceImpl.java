@@ -4,14 +4,16 @@ import com.africa.semicolon.ewallet.data.models.*;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
 import com.africa.semicolon.ewallet.dtos.request.*;
+
 import com.africa.semicolon.ewallet.dtos.response.accountverificationpaystackresponse.AccountVerificationPaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.Bank;
 import com.africa.semicolon.ewallet.dtos.response.bankcoderesponse.BankCodePaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.bvnvalidationpaystackresponse.BVNValidationPaystackResponse;
 import com.africa.semicolon.ewallet.dtos.response.createtransferrecipientpaystackresponse.CreateTransferRecipientPaystackResponse;
-
+import com.africa.semicolon.ewallet.dtos.response.getbankspaystackresponse.BankName;
 import com.africa.semicolon.ewallet.dtos.response.getbankspaystackresponse.GetBanksPaystackResponse;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
+
 
 
 import com.africa.semicolon.ewallet.services.cardservices.CardService;
@@ -21,6 +23,7 @@ import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPSer
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.*;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +90,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Object verifyReceiverAccount(AccountVerificationRequest accountVerificationRequest) throws IOException {
+    public AccountVerificationPaystackResponse verifyReceiverAccount(AccountVerificationRequest accountVerificationRequest) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Object getListOfBanks() throws IOException {
+    public List<BankName> getListOfBanks() throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -133,7 +136,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Object bvnValidation(BvnValidationRequest bvnValidationRequest) throws IOException {
+    public BVNValidationPaystackResponse bvnValidation(BvnValidationRequest bvnValidationRequest) throws IOException {
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json");
@@ -189,7 +192,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Object createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException {
+    public String createTransferRecipient(CreateTransferRecipientRequest createTransferRecipientRequest) throws IOException {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
 
@@ -227,7 +230,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Object initiateTransfer(InitiateTransferRequest initiateTransferRequest) throws IOException {
+    public JsonNode initiateTransfer(InitiateTransferRequest initiateTransferRequest) throws IOException {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         String uuid = UUID.randomUUID().toString();

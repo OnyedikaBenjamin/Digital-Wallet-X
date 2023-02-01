@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 @Setter
 public class GetBanksPaystackResponse {
-    private List<Bank>data;
+    private List<BankName>data;
 }
