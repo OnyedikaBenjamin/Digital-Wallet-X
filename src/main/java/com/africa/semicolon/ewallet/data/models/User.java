@@ -47,6 +47,7 @@ public class User {
     @JoinColumn(name = "kyc_id", referencedColumnName = "id")
     private KYC kyc;
 
+
     public User(String firstName, String lastName, String emailAddress,  String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;

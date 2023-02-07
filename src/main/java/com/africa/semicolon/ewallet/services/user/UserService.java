@@ -36,4 +36,6 @@ public interface UserService {
 
     String deleteUser(Long userId, DeleteUserRequest deleteUserRequest);
 
+    User findUserById(Long userId);
+
 }

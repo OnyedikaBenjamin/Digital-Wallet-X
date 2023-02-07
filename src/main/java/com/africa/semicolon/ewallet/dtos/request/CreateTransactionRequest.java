@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Setter
 @Getter
 public class CreateTransactionRequest {
-    private String receiverAccountNumber;
     private BigDecimal amount;
     private String transactionDescription;
-    private String receiverBankName;
-
 }
