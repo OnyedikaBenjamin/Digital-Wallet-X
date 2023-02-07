@@ -282,6 +282,11 @@ public class UserServiceImpl implements UserService{
         else throw new GenericHandlerException("Incorrect Password");
     }
 
+    @Override
+    public User findUserById(Long userId) {
+        return userRepo.findById(userId).orElseThrow(()-> new GenericHandlerException("user doesnt exist"));
+    }
+
 
     @Override
     public String login(LoginRequest loginRequest) {
