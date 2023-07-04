@@ -35,9 +35,7 @@ public class CardController {
                 .isSuccessful(true)
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
-
     }
-
     @DeleteMapping("/deleteCard/{cardId}")
     public ResponseEntity<?>deleteCard(@PathVariable("cardId")Long cardId, HttpServletRequest httpServletRequest){
         String removeCard = cardService.deleteCard(cardId);
@@ -66,8 +64,6 @@ public class CardController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-
-
 
     @PutMapping("/editCard/{cardId}")
     public ResponseEntity<?> editCard(@PathVariable("cardId") Long cardId, @RequestBody EditCardRequest editCardRequest,

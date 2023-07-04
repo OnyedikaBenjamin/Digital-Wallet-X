@@ -25,7 +25,6 @@ import java.util.Objects;
 
 @Service
 public class CardServicesImpl implements CardService{
-
     private final String SECRET_KEY = System.getenv("PAYSTACK_SECRET_KEY");
 
     @Autowired
@@ -79,9 +78,7 @@ public class CardServicesImpl implements CardService{
                     .readValue(response.string(), CardVerificationPaystackResponse.class);
             if (cardVerificationPaystackResponse.getData().getLinked_bank_id() == null)throw new GenericHandlerException("Invalid card");
             return cardVerificationPaystackResponse.getData().getLinked_bank_id();
-
         }
-
     }
 
     @Override
@@ -93,8 +90,6 @@ public class CardServicesImpl implements CardService{
             foundCard.setCvv(editCardRequest.getCvv());
             cardRepo.save(foundCard);
         }
-
-
 
     @Override
     public Card viewCardById(Long cardId) {

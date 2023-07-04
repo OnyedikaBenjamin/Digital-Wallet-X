@@ -46,7 +46,6 @@ public class RegistrationServiceImpl implements RegistrationService{
                 passwordEncoder.encode(registrationRequest.getPassword()),
                 Role.USER
         ));
-
         emailSender.send(registrationRequest.getEmailAddress(), buildEmail(registrationRequest.getFirstName(), oTP));
         return oTP;
     }
@@ -59,13 +58,11 @@ public class RegistrationServiceImpl implements RegistrationService{
         if(otp.getExpiredAt().isBefore(LocalDateTime.now())){
             throw new GenericHandlerException("Token has expired");
         }
-
         if(otp.getVerifiedAt() != null){
             throw new GenericHandlerException("Token has been used");
         }
         verificationOTPService.setVerifiedAt(otp.getOneTimePassword());
         userService.enableUser(verifyOTPRequest.getEmailAddress());
-
         return "verified";
     }
 
@@ -84,7 +81,6 @@ public class RegistrationServiceImpl implements RegistrationService{
         );
         verificationOTPService.saveVerificationOTP(verificationOTP);
         emailSender.send(sendOTPRequest.getEmailAddress(), buildEmail(foundUser.getFirstName(), oTP));
-
         return oTP;
     }
 

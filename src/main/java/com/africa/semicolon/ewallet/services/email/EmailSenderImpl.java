@@ -28,5 +28,6 @@ public class EmailSenderImpl implements EmailSender{
             log.info(e.getMessage());
             throw new RuntimeException(e);
         }
+
     }
 }

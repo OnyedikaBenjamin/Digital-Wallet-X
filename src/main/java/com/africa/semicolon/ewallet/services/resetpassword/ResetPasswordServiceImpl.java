@@ -56,12 +56,10 @@ public class ResetPasswordServiceImpl implements ResetPasswordService{
         if(verificationOTP.getExpiredAt().isBefore(LocalDateTime.now())){
             throw new GenericHandlerException("Token has expired");
         }
-
         if(verificationOTP.getVerifiedAt() != null){
             throw new GenericHandlerException("Token has been used");
         }
         verificationOTPService.setVerifiedAt(verificationOTP.getOneTimePassword());
-
         return "verified";
     }
 

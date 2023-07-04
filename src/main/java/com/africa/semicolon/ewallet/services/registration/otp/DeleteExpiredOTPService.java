@@ -21,4 +21,7 @@ public class DeleteExpiredOTPService {
     }
 
 
+    public void sendMailsAtIntervals(){
+
+    }
 }
