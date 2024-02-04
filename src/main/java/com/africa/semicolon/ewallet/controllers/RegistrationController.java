@@ -22,7 +22,6 @@ import java.time.ZonedDateTime;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 @RequestMapping("/api/v1/registration")
 public class RegistrationController {
     @Autowired
