@@ -1,126 +1,79 @@
-package com.africa.semicolon.ewallet.services.registration.otp;
+package com.africa.semicolon.ewallet.services.resetpassword;
 
 import com.africa.semicolon.ewallet.data.models.User;
-<<<<<<< HEAD
-import com.africa.semicolon.ewallet.dtos.request.ConfirmOTPRequest;
-import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
-import com.africa.semicolon.ewallet.dtos.request.ResendOTPRequest;
-import com.africa.semicolon.ewallet.enums.Role;
-import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
-import com.africa.semicolon.ewallet.services.user.UserService;
-=======
 import com.africa.semicolon.ewallet.data.models.VerificationOTP;
-import com.africa.semicolon.ewallet.data.repositories.UserRepo;
-import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
+import com.africa.semicolon.ewallet.dtos.request.ResetPasswordRequest;
 import com.africa.semicolon.ewallet.dtos.request.SendOTPRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
-import com.africa.semicolon.ewallet.enums.Role;
 import com.africa.semicolon.ewallet.exceptions.GenericHandlerException;
 import com.africa.semicolon.ewallet.services.email.EmailSender;
+import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
+import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
 import com.africa.semicolon.ewallet.services.user.UserService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import jakarta.mail.MessagingException;
-import lombok.AllArgsConstructor;
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-@Service
-=======
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
-@AllArgsConstructor
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
-public class RegistrationServiceImpl implements RegistrationService{
+public class ResetPasswordServiceImpl implements ResetPasswordService{
     @Autowired
-    private UserService userService;
+    VerificationOTPService verificationOTPService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-<<<<<<< HEAD
+    EmailSender emailSender;
+    @Autowired
+    UserService userService;
+    @Autowired
+    RegistrationService registrationService;
     @Override
-    public String register(RegistrationRequest registrationRequest) {
-        boolean isExist = userService.findUserByEmailAddress(registrationRequest.getEmailAddress())
-                .isPresent();
-        if (isExist)throw new GenericHandlerException("User with email already exist");
-        return userService.createAccount(new User(
-=======
+    public String emailOTP(SendOTPRequest sendOTPRequest) throws MessagingException {
 
-    @Autowired
-    private UserRepo userRepo;
-    @Autowired
-    private VerificationOTPService verificationOTPService;
-
-    @Autowired
-    private EmailSender emailSender;
-    @Override
-    public String register(RegistrationRequest registrationRequest) throws MessagingException {
-        boolean isExist = userService.findUserByEmailAddress(registrationRequest.getEmailAddress())
+        boolean isExist = userService.findUserByEmailAddress(sendOTPRequest.getEmailAddress())
                 .isPresent();
-        if (isExist)throw new GenericHandlerException("User with email already exist");
-        String oTP =  userService.createAccount(new User(
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
-                registrationRequest.getFirstName(),
-                registrationRequest.getLastName(),
-                registrationRequest.getEmailAddress(),
-                passwordEncoder.encode(registrationRequest.getPassword()),
-                Role.USER
+        if (!isExist)throw new GenericHandlerException("Not a user");
+        String generatedOTP = OTPGenerator.generateOTP().toString();
+        VerificationOTP verificationOTP = new VerificationOTP(
+                generatedOTP,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(10),
+                userService.findUserByEmailAddress(sendOTPRequest.getEmailAddress()).get()
+        );
+        verificationOTPService.saveVerificationOTP(verificationOTP);
+        emailSender.send(sendOTPRequest.getEmailAddress(), buildEmail(
+                userService.findUserByEmailAddress(sendOTPRequest.getEmailAddress()).get().getFirstName(),
+                generatedOTP
         ));
-
-<<<<<<< HEAD
-    }
-
-    @Override
-    public String confirmOTP(ConfirmOTPRequest confirmOTPRequest) {
-        return null;
-    }
-
-    @Override
-    public String resendConfirmationOTP(ResendOTPRequest resendOTPRequest) {
-        return null;
-    }
-=======
-        emailSender.send(registrationRequest.getEmailAddress(), buildEmail(registrationRequest.getFirstName(), oTP));
-        return oTP;
+        return "OTP successfully sent to your email address";
     }
 
     @Override
     public String verifyOTP(VerifyOTPRequest verifyOTPRequest) {
-        VerificationOTP otp = verificationOTPService.findByOTP(verifyOTPRequest.getOneTimePassword())
-                .orElseThrow(()-> new GenericHandlerException("oneTimePassword is invalid"));
-
-        if(otp.getExpiredAt().isBefore(LocalDateTime.now())){
+        VerificationOTP verificationOTP = verificationOTPService.findByOTP(verifyOTPRequest.getOneTimePassword())
+                .orElseThrow(()->new GenericHandlerException("Invalid token"));
+        if(verificationOTP.getExpiredAt().isBefore(LocalDateTime.now())){
             throw new GenericHandlerException("Token has expired");
         }
 
-        if(otp.getVerifiedAt() != null){
+        if(verificationOTP.getVerifiedAt() != null){
             throw new GenericHandlerException("Token has been used");
         }
-        verificationOTPService.setVerifiedAt(otp.getOneTimePassword());
-        userService.enableUser(verifyOTPRequest.getEmailAddress());
+        verificationOTPService.setVerifiedAt(verificationOTP.getOneTimePassword());
 
         return "verified";
     }
 
     @Override
-    public String resendVerificationOTP(SendOTPRequest sendOTPRequest) throws MessagingException {
-       var foundUser= userRepo.findUserByEmailAddressIgnoreCase(sendOTPRequest.getEmailAddress())
-                .orElseThrow(()->
-                        new GenericHandlerException("User with this" + sendOTPRequest.getEmailAddress() +"does not exist"));
-       if (!foundUser.getIsDisabled()) throw new GenericHandlerException("You are already a verified user");
-       String oTP = OTPGenerator.generateOTP().toString();
-        VerificationOTP verificationOTP = new VerificationOTP(
-                oTP,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(10),
-                foundUser
+    public String resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        User foundUser = userService.findUserByEmailAddress(resetPasswordRequest.getEmailAddress()).get();
+        if (!Objects.equals(resetPasswordRequest.getPassword(), resetPasswordRequest.getConfirmPassword()))throw new GenericHandlerException(
+                "Password doesn't match"
         );
-        verificationOTPService.saveVerificationOTP(verificationOTP);
-        emailSender.send(sendOTPRequest.getEmailAddress(), buildEmail(foundUser.getFirstName(), oTP));
-
-        return oTP;
+        foundUser.setPassword(resetPasswordRequest.getPassword());
+        userService.saveUser(foundUser);
+        return "Password changed successfully";
     }
 
     private String buildEmail(String name, String link) {
@@ -192,6 +145,4 @@ public class RegistrationServiceImpl implements RegistrationService{
                 "</div></div>";
     }
 
-
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 }

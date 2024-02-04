@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -32,3 +33,13 @@ build/
 
 ### VS Code ###
 .vscode/
+=======
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76

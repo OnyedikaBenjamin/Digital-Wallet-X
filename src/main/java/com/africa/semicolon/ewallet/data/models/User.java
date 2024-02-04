@@ -1,6 +1,10 @@
 package com.africa.semicolon.ewallet.data.models;
 
 import com.africa.semicolon.ewallet.enums.Role;
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,6 +14,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -34,6 +43,19 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isDisabled = true;
+<<<<<<< HEAD
+=======
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_Id", referencedColumnName = "id")
+    private List<Card> cardList ;
+    @OneToOne
+    @JoinColumn(name = "nextOfKin_Id", referencedColumnName = "id")
+    private NextOfKin nextOfKin;
+    @OneToOne
+    @JoinColumn(name = "kyc_id", referencedColumnName = "id")
+    private KYC kyc;
+
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 
     public User(String firstName, String lastName, String emailAddress,  String password, Role role) {
         this.firstName = firstName;

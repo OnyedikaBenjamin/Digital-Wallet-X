@@ -28,7 +28,10 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
+<<<<<<< HEAD
 			<version>6.0.1</version>
+=======
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 		</dependency>
 
 		<dependency>
@@ -58,6 +61,30 @@
 		</dependency>
 
 		<dependency>
+<<<<<<< HEAD
+=======
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>2.7.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220924</version>
+		</dependency>
+
+
+
+		<dependency>
+>>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
