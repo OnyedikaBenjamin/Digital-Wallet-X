@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 =======
 import org.springframework.web.bind.annotation.*;
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 
 import java.time.ZonedDateTime;
 
