@@ -81,13 +81,11 @@ public class UserServiceImpl implements UserService{
         saveUser(user);
         String oTP = OTPGenerator.generateOTP().toString();
         VerificationOTP verificationOTP = new VerificationOTP(
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
                 oTP,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(10),
                 user
         );
-<<<<<<< HEAD
         confirmationOTPService.saveConfirmationOTP(confirmationOTP);
         return oTP;
     }
