@@ -34,7 +34,13 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Autowired
     private UserService userService;
     @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private VerificationOTPService verificationOTPService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailSender emailSender;
     @Override
     public String register(RegistrationRequest registrationRequest) {
         boolean isExist = userService.findUserByEmailAddress(registrationRequest.getEmailAddress())
@@ -42,13 +48,9 @@ public class RegistrationServiceImpl implements RegistrationService{
         if (isExist)throw new GenericHandlerException("User with email already exist");
         return userService.createAccount(new User(
 
-    @Autowired
-    private UserRepo userRepo;
-    @Autowired
-    private VerificationOTPService verificationOTPService;
 
-    @Autowired
-    private EmailSender emailSender;
+
+
     @Override
     public String register(RegistrationRequest registrationRequest) throws MessagingException {
         boolean isExist = userService.findUserByEmailAddress(registrationRequest.getEmailAddress())
@@ -61,8 +63,6 @@ public class RegistrationServiceImpl implements RegistrationService{
                 passwordEncoder.encode(registrationRequest.getPassword()),
                 Role.USER
         ));
-
-<<<<<<< HEAD
     }
 
     @Override
