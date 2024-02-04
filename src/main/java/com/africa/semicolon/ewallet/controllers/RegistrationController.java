@@ -8,7 +8,6 @@ import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
 import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
 import jakarta.mail.MessagingException;
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
