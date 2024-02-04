@@ -28,7 +28,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-<<<<<<< HEAD
 			<version>6.0.1</version>
 =======
 >>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
