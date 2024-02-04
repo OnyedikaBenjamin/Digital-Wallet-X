@@ -8,5 +8,4 @@ public interface RegistrationService {
     String register(RegistrationRequest registrationRequest);
     String confirmOTP(ConfirmOTPRequest confirmOTPRequest);
     String resendConfirmationOTP(ResendOTPRequest resendOTPRequest);
-
 }

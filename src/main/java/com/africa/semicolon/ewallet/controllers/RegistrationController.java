@@ -24,9 +24,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest,
-<<<<<<< HEAD
                                       HttpServletRequest httpServletRequest){
-=======
                                       HttpServletRequest httpServletRequest) throws MessagingException {
 >>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
         String createUser = registrationService.register(registrationRequest);
