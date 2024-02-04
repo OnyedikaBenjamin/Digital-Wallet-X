@@ -89,8 +89,6 @@ public class UserServiceImpl implements UserService{
         confirmationOTPService.saveConfirmationOTP(confirmationOTP);
         return oTP;
     }
-
-=======
         verificationOTPService.saveVerificationOTP(verificationOTP);
         return oTP;
     }
