@@ -55,7 +55,6 @@ public class RegistrationServiceImpl implements RegistrationService{
                 .isPresent();
         if (isExist)throw new GenericHandlerException("User with email already exist");
         String oTP =  userService.createAccount(new User(
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
                 registrationRequest.getFirstName(),
                 registrationRequest.getLastName(),
                 registrationRequest.getEmailAddress(),
