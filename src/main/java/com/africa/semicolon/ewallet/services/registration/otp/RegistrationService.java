@@ -9,11 +9,4 @@ public interface RegistrationService {
     String confirmOTP(ConfirmOTPRequest confirmOTPRequest);
     String resendConfirmationOTP(ResendOTPRequest resendOTPRequest);
 
-public interface RegistrationService {
-    String register(RegistrationRequest registrationRequest) throws MessagingException;
-
-    String verifyOTP(VerifyOTPRequest verifyOTPRequest);
-
-    String resendVerificationOTP(SendOTPRequest sendOTPRequest) throws MessagingException;
-
 }
