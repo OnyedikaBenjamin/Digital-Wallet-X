@@ -2,7 +2,6 @@ package com.africa.semicolon.ewallet.services.user;
 
 import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.models.Card;
-import com.africa.semicolon.ewallet.data.models.User;
 
 import com.africa.semicolon.ewallet.dtos.request.*;
 import com.africa.semicolon.ewallet.dtos.response.accountverificationpaystackresponse.AccountVerificationPaystackResponse;
