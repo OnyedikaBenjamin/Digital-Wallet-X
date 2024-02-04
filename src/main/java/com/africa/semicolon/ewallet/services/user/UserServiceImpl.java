@@ -1,6 +1,5 @@
 package com.africa.semicolon.ewallet.services.user;
 
-<<<<<<< HEAD
 import com.africa.semicolon.ewallet.data.models.ConfirmationOTP;
 import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@Service
-=======
 import com.africa.semicolon.ewallet.data.models.*;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 
@@ -35,7 +32,6 @@ import com.africa.semicolon.ewallet.services.cardservices.CardService;
 import com.africa.semicolon.ewallet.services.kycservices.KYCService;
 import com.africa.semicolon.ewallet.services.nextofkinservices.NextOfKinService;
 import com.africa.semicolon.ewallet.services.registration.otp.VerificationOTPService;
-import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -70,7 +66,6 @@ public class UserServiceImpl implements UserService{
         userRepo.save(user);
         String oTP = OTPGenerator.generateOTP().toString();
         ConfirmationOTP confirmationOTP = new ConfirmationOTP(
-=======
     private CardService cardService;
     @Autowired
     private VerificationOTPService verificationOTPService;
