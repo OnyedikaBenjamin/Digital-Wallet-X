@@ -19,7 +19,6 @@ public interface UserService {
     Optional<User>findUserByEmailAddress(String EmailAddress);
 
     String login(LoginRequest loginRequest);
-    Optional<User>findUserByEmailAddress(String EmailAddress);
 
     String changePassword(ChangePasswordRequest changePasswordRequest);
     void enableUser(String emailAddress);
