@@ -16,6 +16,4 @@ public interface RegistrationService {
 
     String resendVerificationOTP(SendOTPRequest sendOTPRequest) throws MessagingException;
 
-
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 }
