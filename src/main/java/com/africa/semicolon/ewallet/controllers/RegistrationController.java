@@ -37,8 +37,6 @@ public class RegistrationController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
-<<<<<<< HEAD
-=======
 
 
     @PostMapping("/verify")
