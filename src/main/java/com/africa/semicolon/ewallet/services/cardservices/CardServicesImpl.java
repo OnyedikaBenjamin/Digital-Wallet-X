@@ -59,7 +59,6 @@ public class CardServicesImpl implements CardService{
         cardRepo.deleteById(cardId);
         return "card deleted successfully";
     }
-
     @Override
     public Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException {
 
