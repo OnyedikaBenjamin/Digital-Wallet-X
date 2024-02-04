@@ -50,7 +50,6 @@ public class RegistrationServiceImpl implements RegistrationService{
         emailSender.send(registrationRequest.getEmailAddress(), buildEmail(registrationRequest.getFirstName(), oTP));
         return oTP;
     }
-
     @Override
     public String verifyOTP(VerifyOTPRequest verifyOTPRequest) {
         VerificationOTP otp = verificationOTPService.findByOTP(verifyOTPRequest.getOneTimePassword())

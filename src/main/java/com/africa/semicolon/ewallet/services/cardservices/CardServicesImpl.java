@@ -60,7 +60,6 @@ public class CardServicesImpl implements CardService{
     }
     @Override
     public Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException {
-
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -77,11 +76,8 @@ public class CardServicesImpl implements CardService{
                     .readValue(response.string(), CardVerificationPaystackResponse.class);
             if (cardVerificationPaystackResponse.getData().getLinked_bank_id() == null)throw new GenericHandlerException("Invalid card");
             return cardVerificationPaystackResponse.getData().getLinked_bank_id();
-
         }
-
     }
-
     @Override
     public void editCard(Long cardId, EditCardRequest editCardRequest) {
             Card foundCard = cardRepo.findById(cardId).orElseThrow(() -> new GenericHandlerException("Card with id does not exist"));
