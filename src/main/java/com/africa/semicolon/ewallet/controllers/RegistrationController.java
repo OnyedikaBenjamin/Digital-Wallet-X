@@ -30,7 +30,6 @@ public class RegistrationController {
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest,
 <<<<<<< HEAD
                                       HttpServletRequest httpServletRequest){
-=======
                                       HttpServletRequest httpServletRequest) throws MessagingException {
         String createUser = registrationService.register(registrationRequest);
         ApiResponse apiResponse = ApiResponse.builder()
