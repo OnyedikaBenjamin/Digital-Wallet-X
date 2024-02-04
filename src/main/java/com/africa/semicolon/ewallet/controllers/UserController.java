@@ -39,8 +39,6 @@ public class UserController {
                 .isSuccessful(true)
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
-
-
     }
 
     @PutMapping("/change-password")
@@ -118,7 +116,6 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-
     @GetMapping("/get-code")
     public ResponseEntity<?>getBankCode(@RequestBody BankCodeRequest bankCodeRequest,
                                         HttpServletRequest httpServletRequest) throws IOException {

@@ -48,8 +48,6 @@ public class CardController {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
     }
-
-
     @GetMapping("/verify-card")
     public ResponseEntity<?>verifyCard(@RequestBody VerifyCardRequest verifyCardRequest,
                                        HttpServletRequest httpServletRequest) throws IOException {
@@ -61,7 +59,6 @@ public class CardController {
                 .statusCode(HttpStatus.OK.value())
                 .isSuccessful(true)
                 .build();
-
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

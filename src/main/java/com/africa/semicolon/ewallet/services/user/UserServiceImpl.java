@@ -152,7 +152,6 @@ public class UserServiceImpl implements UserService{
                 throw new RuntimeException(e);
             }
         RequestBody body = RequestBody.create(mediaType, json.toString());
-
         Request request = new Request.Builder()
                 .url("https://api.paystack.co/bvn/match")
                 .post(body)

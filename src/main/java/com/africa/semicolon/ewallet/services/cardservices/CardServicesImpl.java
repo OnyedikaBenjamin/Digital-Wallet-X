@@ -26,7 +26,6 @@ import java.util.Objects;
 @Service
 public class CardServicesImpl implements CardService{
     private final String SECRET_KEY = System.getenv("PAYSTACK_SECRET_KEY");
-
     @Autowired
     private CardRepo cardRepo;
 
@@ -44,7 +43,6 @@ public class CardServicesImpl implements CardService{
         card.setCvv(addCardRequest.getCvv());
         return cardRepo.save(card);
     }
-
     private void cardExpiryDateVerification(String expiryDate) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
         simpleDateFormat.setLenient(false);
@@ -52,25 +50,20 @@ public class CardServicesImpl implements CardService{
         boolean expired = expiry.before(new Date());
         if (expired)throw new GenericHandlerException("Expired card can't be added");
     }
-
     @Override
     public String deleteCard(Long cardId) {
         cardRepo.deleteById(cardId);
         return "card deleted successfully";
     }
-
     @Override
     public Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException {
-
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url("https://api.paystack.co/decision/bin/"
                 +verifyCardRequest.getCardNumber().substring(0, 6))
                 .get()
                 .addHeader("Authorization", "Bearer "+SECRET_KEY)
                 .build();
-
         try (ResponseBody response = client.newCall(request).execute().body()){
             ObjectMapper objectMapper = new ObjectMapper();
             CardVerificationPaystackResponse cardVerificationPaystackResponse
@@ -80,7 +73,6 @@ public class CardServicesImpl implements CardService{
             return cardVerificationPaystackResponse.getData().getLinked_bank_id();
         }
     }
-
     @Override
     public void editCard(Long cardId, EditCardRequest editCardRequest) {
             Card foundCard = cardRepo.findById(cardId).orElseThrow(() -> new GenericHandlerException("Card with id does not exist"));
@@ -90,12 +82,10 @@ public class CardServicesImpl implements CardService{
             foundCard.setCvv(editCardRequest.getCvv());
             cardRepo.save(foundCard);
         }
-
     @Override
     public Card viewCardById(Long cardId) {
         return cardRepo.findById(cardId).get();
     }
-
     @Override
     public void deleteUserCards(Long userid) {
         cardRepo.deleteUsersCard(userid);
@@ -107,6 +97,5 @@ public class CardServicesImpl implements CardService{
                 stream().
                 filter(card -> Objects.equals(card.getUser().getId(), userId)).
                 toList();
-
     }
 }
