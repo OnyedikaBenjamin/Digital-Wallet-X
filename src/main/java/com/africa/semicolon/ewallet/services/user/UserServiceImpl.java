@@ -322,13 +322,10 @@ public class UserServiceImpl implements UserService{
         return "Login successful";
     }
 
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
     @Override
     public Optional<User> findUserByEmailAddress(String emailAddress) {
         return userRepo.findUserByEmailAddressIgnoreCase(emailAddress);
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
@@ -345,5 +342,4 @@ public class UserServiceImpl implements UserService{
         userRepo.enableUser(emailAddress);
     }
 
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 }
