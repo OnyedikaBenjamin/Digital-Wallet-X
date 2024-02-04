@@ -8,11 +8,6 @@ public interface RegistrationService {
     String register(RegistrationRequest registrationRequest);
     String confirmOTP(ConfirmOTPRequest confirmOTPRequest);
     String resendConfirmationOTP(ResendOTPRequest resendOTPRequest);
-=======
-import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
-import com.africa.semicolon.ewallet.dtos.request.SendOTPRequest;
-import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
-import jakarta.mail.MessagingException;
 
 public interface RegistrationService {
     String register(RegistrationRequest registrationRequest) throws MessagingException;
