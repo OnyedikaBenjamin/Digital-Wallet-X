@@ -68,5 +68,5 @@ public class RegistrationController {
                 .build();
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
+    }}
 }

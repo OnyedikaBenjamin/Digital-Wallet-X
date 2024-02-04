@@ -1,7 +1,7 @@
 package com.africa.semicolon.ewallet.services.registration.otp;
 
 import com.africa.semicolon.ewallet.data.models.User;
-<<<<<<< HEAD
+
 import com.africa.semicolon.ewallet.dtos.request.ConfirmOTPRequest;
 import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
 import com.africa.semicolon.ewallet.dtos.request.ResendOTPRequest;
@@ -21,32 +21,26 @@ import com.africa.semicolon.ewallet.services.user.UserService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-<<<<<<< HEAD
-@Service
-=======
 import java.time.LocalDateTime;
+
+
 
 @Service
 @AllArgsConstructor
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
 public class RegistrationServiceImpl implements RegistrationService{
     @Autowired
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-<<<<<<< HEAD
     @Override
     public String register(RegistrationRequest registrationRequest) {
         boolean isExist = userService.findUserByEmailAddress(registrationRequest.getEmailAddress())
                 .isPresent();
         if (isExist)throw new GenericHandlerException("User with email already exist");
         return userService.createAccount(new User(
-=======
 
     @Autowired
     private UserRepo userRepo;
