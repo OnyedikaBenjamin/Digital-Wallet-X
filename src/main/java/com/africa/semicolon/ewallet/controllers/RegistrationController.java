@@ -3,7 +3,6 @@ package com.africa.semicolon.ewallet.controllers;
 import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
 import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
 import com.africa.semicolon.ewallet.utils.ApiResponse;
-=======
 import com.africa.semicolon.ewallet.dtos.request.SendOTPRequest;
 import com.africa.semicolon.ewallet.dtos.request.VerifyOTPRequest;
 import com.africa.semicolon.ewallet.services.registration.otp.RegistrationService;
