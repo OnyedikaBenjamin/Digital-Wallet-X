@@ -6,6 +6,7 @@ import com.africa.semicolon.ewallet.data.models.User;
 import com.africa.semicolon.ewallet.data.repositories.UserRepo;
 import com.africa.semicolon.ewallet.services.registration.otp.ConfirmationOTPService;
 import com.africa.semicolon.ewallet.utils.OTPGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,12 +58,12 @@ import java.util.UUID;
 
 @Service
 @Slf4j
->>>>>>> aee9af0e7b39e430cb08826f8cf583fa2f823c76
+
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
     @Autowired
-<<<<<<< HEAD
+
     private ConfirmationOTPService confirmationOTPService;
     @Override
     public String createAccount(User user) {
