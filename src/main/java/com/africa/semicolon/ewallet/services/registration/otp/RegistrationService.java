@@ -1,7 +1,5 @@
 package com.africa.semicolon.ewallet.services.registration.otp;
 
-
-<<<<<<< HEAD
 import com.africa.semicolon.ewallet.dtos.request.ConfirmOTPRequest;
 import com.africa.semicolon.ewallet.dtos.request.RegistrationRequest;
 import com.africa.semicolon.ewallet.dtos.request.ResendOTPRequest;
