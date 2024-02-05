@@ -46,7 +46,6 @@ public class RegistrationServiceImpl implements RegistrationService{
                 passwordEncoder.encode(registrationRequest.getPassword()),
                 Role.USER
         ));
-
         emailSender.send(registrationRequest.getEmailAddress(), buildEmail(registrationRequest.getFirstName(), oTP));
         return oTP;
     }
