@@ -57,7 +57,6 @@ public class RegistrationServiceImpl implements RegistrationService{
         if(otp.getExpiredAt().isBefore(LocalDateTime.now())){
             throw new GenericHandlerException("Token has expired");
         }
-
         if(otp.getVerifiedAt() != null){
             throw new GenericHandlerException("Token has been used");
         }
