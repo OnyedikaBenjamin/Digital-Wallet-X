@@ -65,6 +65,7 @@ public class RegistrationServiceImpl implements RegistrationService{
 
         return "verified";
     }
+
     @Override
     public String resendVerificationOTP(SendOTPRequest sendOTPRequest) throws MessagingException {
        var foundUser= userRepo.findUserByEmailAddressIgnoreCase(sendOTPRequest.getEmailAddress())
