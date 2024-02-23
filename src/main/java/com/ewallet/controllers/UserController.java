@@ -1,7 +1,6 @@
 package com.ewallet.controllers;
 
 import com.ewallet.data.models.Card;
-import com.africa.semicolon.ewallet.dtos.request.*;
 import com.ewallet.dtos.request.*;
 import com.ewallet.dtos.response.accountverificationpaystackresponse.AccountVerificationPaystackResponse;
 import com.ewallet.services.user.UserService;
