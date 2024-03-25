@@ -58,6 +58,7 @@ public class CardServicesImpl implements CardService{
         cardRepo.deleteById(cardId);
         return "card deleted successfully";
     }
+
     @Override
     public Object verifyCard(VerifyCardRequest verifyCardRequest) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -68,7 +69,6 @@ public class CardServicesImpl implements CardService{
                 .get()
                 .addHeader("Authorization", "Bearer "+SECRET_KEY)
                 .build();
-
         try (ResponseBody response = client.newCall(request).execute().body()){
             ObjectMapper objectMapper = new ObjectMapper();
             CardVerificationPaystackResponse cardVerificationPaystackResponse
